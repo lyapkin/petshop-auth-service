@@ -36,7 +36,7 @@ func getUserUniquePermissions(u *domain.User) []domain.Permission {
 	seen := make(map[int]struct{}, 12)
 
 	permissions := make([]domain.Permission, 0, 12)
-	for _, role := range u.Role {
+	for _, role := range u.Roles {
 		for _, permission := range role.Permissions {
 			if _, ok := seen[permission.ID]; !ok {
 				permissions = append(permissions, permission)

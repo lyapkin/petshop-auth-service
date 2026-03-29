@@ -51,7 +51,7 @@ func (u *usecase) Register(ctx context.Context, user *domain.User) (err error) {
 			Internal: err,
 		}
 	}
-	user.Role = append(user.Role, *role)
+	user.Roles = append(user.Roles, *role)
 	u.log.InfoContext(ctx, "user role setting succeeded")
 
 	// storing user to db
