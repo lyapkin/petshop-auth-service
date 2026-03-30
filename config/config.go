@@ -15,6 +15,8 @@ import (
 type config struct {
 	Env Env
 	JWTToken
+	DB
+	Redis
 }
 
 type JWTToken struct {
@@ -37,9 +39,21 @@ func MustLoad() *config {
 		log.Fatal(err)
 	}
 
+	db, err := loadDBConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	redis, err := loadRedisConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return &config{
 		Env:      env,
 		JWTToken: *jwtToken,
+		DB:       *db,
+		Redis:    *redis,
 	}
 }
 
