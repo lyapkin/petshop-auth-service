@@ -13,6 +13,7 @@ import (
 )
 
 type config struct {
+	Env Env
 	JWTToken
 }
 
@@ -29,12 +30,15 @@ func MustLoad() *config {
 		log.Fatal(err)
 	}
 
+	env := ParseEnv(os.Getenv("ENV"))
+
 	jwtToken, err := loadJWTTokenConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return &config{
+		Env:      env,
 		JWTToken: *jwtToken,
 	}
 }
