@@ -13,7 +13,7 @@ type accessTokenClaims struct {
 	jwt.RegisteredClaims
 }
 
-func (s *service) GenerateAccess(now time.Time, user *domain.User) (string, error) {
+func (s *service) GenerateAccess(now time.Time, user *domain.User) (*domain.AccessToken, error) {
 	accessClaims := accessTokenClaims{
 		Name:   user.Name,
 		Scopes: getUserUniquePermissions(user),
@@ -26,10 +26,12 @@ func (s *service) GenerateAccess(now time.Time, user *domain.User) (string, erro
 
 	accessToken, err := jwt.NewWithClaims(jwt.SigningMethodRS256, accessClaims).SignedString(s.accessSecret)
 	if err != nil {
-		return "", domain.NewInternalErr(err)
+		return nil, domain.NewInternalErr(err)
 	}
 
-	return accessToken, nil
+	return &domain.AccessToken{
+		Token: accessToken,
+	}, nil
 }
 
 func getUserUniquePermissions(u *domain.User) []domain.Permission {

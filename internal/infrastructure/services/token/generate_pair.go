@@ -21,7 +21,7 @@ func (s *service) GeneratePair(user *domain.User, tokenID uuid.UUID) (*domain.To
 	}
 
 	return &domain.Token{
-		Access:  accessToken,
-		Refresh: refreshToken,
+		AccessToken:  *accessToken,
+		RefreshToken: *refreshToken,
 	}, nil
 }

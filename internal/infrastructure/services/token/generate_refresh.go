@@ -8,20 +8,24 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (s *service) GenerateRefresh(now time.Time, user *domain.User, tokenID uuid.UUID) (string, error) {
+func (s *service) GenerateRefresh(now time.Time, user *domain.User, tokenID uuid.UUID) (*domain.RefreshToken, error) {
+	expiresAt := now.Add(s.refreshTTL)
 	refreshClaims := refreshTokenClaims{
 		TokenID: tokenID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Subject:   user.ID.String(),
-			ExpiresAt: jwt.NewNumericDate(now.Add(s.refreshTTL)),
+			ExpiresAt: jwt.NewNumericDate(expiresAt),
 			IssuedAt:  jwt.NewNumericDate(now),
 		},
 	}
 
 	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString(s.refreshSecret)
 	if err != nil {
-		return "", domain.NewInternalErr(err)
+		return nil, domain.NewInternalErr(err)
 	}
 
-	return refreshToken, nil
+	return &domain.RefreshToken{
+		Token:     refreshToken,
+		ExpiresAt: expiresAt,
+	}, nil
 }
