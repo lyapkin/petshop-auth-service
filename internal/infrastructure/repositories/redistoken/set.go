@@ -1,4 +1,4 @@
-package token
+package redistoken
 
 import (
 	"context"

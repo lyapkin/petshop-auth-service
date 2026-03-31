@@ -1,4 +1,4 @@
-package password
+package argon2pass
 
 const (
 	saltLength = 16

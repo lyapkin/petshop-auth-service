@@ -1,4 +1,4 @@
-package user
+package pguser
 
 import (
 	"database/sql"

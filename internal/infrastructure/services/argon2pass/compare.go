@@ -1,4 +1,4 @@
-package password
+package argon2pass
 
 import "github.com/alexedwards/argon2id"
 

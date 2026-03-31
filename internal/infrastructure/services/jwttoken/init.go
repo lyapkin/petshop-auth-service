@@ -1,4 +1,4 @@
-package token
+package jwttoken
 
 import (
 	"crypto/rsa"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/lyapkin/shop/auth/config"
 )
 
 type refreshTokenClaims struct {
@@ -20,6 +21,11 @@ type service struct {
 	refreshTTL    time.Duration
 }
 
-func New() *service {
-	return &service{}
+func New(cfg *config.JWTToken) *service {
+	return &service{
+		accessSecret:  cfg.AccessSecret,
+		refreshSecret: cfg.RefreshSecret,
+		accessTTL:     cfg.AccessTTL,
+		refreshTTL:    cfg.RefreshTTL,
+	}
 }
