@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Token struct {
 	AccessToken
@@ -10,6 +14,8 @@ type Token struct {
 type RefreshToken struct {
 	Token     string    `json:"refreshToken"`
 	ExpiresAt time.Time `json:"-"`
+	TokenID   uuid.UUID `json:"-"`
+	UserID    uuid.UUID `json:"-"`
 }
 
 type AccessToken struct {

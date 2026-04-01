@@ -13,6 +13,6 @@ type TokenService interface {
 }
 
 type TokenRepo interface {
-	Set(ctx context.Context, tokenID uuid.UUID, userID uuid.UUID) error
+	Set(ctx context.Context, token *domain.RefreshToken) error
 	PopByID(context.Context, uuid.UUID) (userID uuid.UUID, err error)
 }
