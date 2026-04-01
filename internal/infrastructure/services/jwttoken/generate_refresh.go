@@ -27,5 +27,7 @@ func (s *service) GenerateRefresh(now time.Time, user *domain.User, tokenID uuid
 	return &domain.RefreshToken{
 		Token:     refreshToken,
 		ExpiresAt: expiresAt,
+		TokenID:   tokenID,
+		UserID:    user.ID,
 	}, nil
 }
