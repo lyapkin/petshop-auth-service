@@ -42,17 +42,17 @@ func (u *usecase) Register(ctx context.Context, user *domain.User) (err error) {
 	u.log.InfoContext(ctx, "user password hashing succeeded")
 
 	// setting base role
-	role, err := u.roleRepo.FindBaseRole()
+	role, err := u.roleRepo.GetBaseRole(ctx)
 	if err != nil {
-		u.log.ErrorContext(ctx, "finding base role failed", slog.String("err", err.Error()))
+		u.log.ErrorContext(ctx, "failed to rerieve base role", slog.String("err", err.Error()))
 		return &domain.AppError{
 			Code:     domain.ErrInternal,
 			Message:  domain.InternalErrorMessage,
 			Internal: err,
 		}
 	}
+	u.log.InfoContext(ctx, "retrieving base role succeeded")
 	user.Roles = append(user.Roles, *role)
-	u.log.InfoContext(ctx, "user role setting succeeded")
 
 	// storing user to db
 	_, err = u.userRepo.Create(ctx, user)
