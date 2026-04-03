@@ -2,7 +2,6 @@ package domain
 
 import (
 	"fmt"
-	"net/http"
 )
 
 type ErrorCode string
@@ -17,16 +16,6 @@ const (
 
 	ErrInternal ErrorCode = "INTERNAL"
 )
-
-// TODO: fix it, the layer should not know what type of communication is used
-var HTTPCode = map[ErrorCode]int{
-	ErrNotFound:         http.StatusNotFound,
-	ErrDuplicate:        http.StatusBadRequest,
-	ErrNotValid:         http.StatusBadRequest,
-	ErrIDExists:         http.StatusInternalServerError,
-	ErrInternal:         http.StatusInternalServerError,
-	ErrNotAuthenticated: http.StatusUnauthorized,
-}
 
 const InternalErrorMessage = "Internal server error"
 
