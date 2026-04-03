@@ -13,10 +13,12 @@ import (
 )
 
 type config struct {
-	Env Env
+	Env             Env
+	ShutdownTimeout time.Duration
 	JWTToken
 	DB
 	Redis
+	HTTPServer
 }
 
 type JWTToken struct {
@@ -34,6 +36,11 @@ func MustLoad() *config {
 
 	env := ParseEnv(os.Getenv("ENV"))
 
+	shutdownTimeout, err := time.ParseDuration(os.Getenv("SHUTDOWN_TIMEOUT"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	jwtToken, err := loadJWTTokenConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -49,11 +56,18 @@ func MustLoad() *config {
 		log.Fatal(err)
 	}
 
+	http, err := loadHTTPConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return &config{
-		Env:      env,
-		JWTToken: *jwtToken,
-		DB:       *db,
-		Redis:    *redis,
+		Env:             env,
+		ShutdownTimeout: shutdownTimeout,
+		JWTToken:        *jwtToken,
+		DB:              *db,
+		Redis:           *redis,
+		HTTPServer:      *http,
 	}
 }
 
