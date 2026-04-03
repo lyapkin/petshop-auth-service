@@ -6,7 +6,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/interfaces"
 )
 
-type usecase struct {
+type Usecase struct {
 	log          *slog.Logger
 	userRepo     interfaces.UserRepo
 	roleRepo     interfaces.RoleRepo
@@ -22,8 +22,8 @@ func New(
 	password interfaces.PasswordHasher,
 	tokenService interfaces.TokenService,
 	tokenRepo interfaces.TokenRepo,
-) *usecase {
-	return &usecase{
+) *Usecase {
+	return &Usecase{
 		log:          log,
 		userRepo:     userRepo,
 		roleRepo:     roleRepo,

@@ -5,7 +5,7 @@ import (
 	"log/slog"
 )
 
-func (u *usecase) Logout(ctx context.Context, refreshToken string) error {
+func (u *Usecase) Logout(ctx context.Context, refreshToken string) error {
 	u.log.InfoContext(ctx, "logout starts")
 
 	tokenID, err := u.tokenService.ParseRefresh(refreshToken)

@@ -8,7 +8,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (u *usecase) Register(ctx context.Context, user *domain.User) (err error) {
+func (u *Usecase) Register(ctx context.Context, user *domain.User) (err error) {
 	u.log.InfoContext(ctx, "user resigstration started")
 
 	if err = user.Validate(); err != nil {

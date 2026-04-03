@@ -8,7 +8,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (u *usecase) setupToken(ctx context.Context, user *domain.User) (*domain.Token, error) {
+func (u *Usecase) setupToken(ctx context.Context, user *domain.User) (*domain.Token, error) {
 	tokenID, err := uuid.NewRandom()
 	if err != nil {
 		u.log.ErrorContext(ctx, "token id generation failed", slog.String("err", err.Error()))

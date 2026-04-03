@@ -9,7 +9,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/dto"
 )
 
-func (u *usecase) Login(ctx context.Context, input *dto.LoginInput) (*domain.Token, error) {
+func (u *Usecase) Login(ctx context.Context, input *dto.LoginInput) (*domain.Token, error) {
 	u.log.InfoContext(ctx, "login starts")
 
 	user, err := u.userRepo.GetByLogin(ctx, input.Login)

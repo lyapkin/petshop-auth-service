@@ -7,7 +7,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (u *usecase) Refresh(ctx context.Context, refreshToken string) (*domain.Token, error) {
+func (u *Usecase) Refresh(ctx context.Context, refreshToken string) (*domain.Token, error) {
 	u.log.InfoContext(ctx, "refresh starts")
 
 	tokenID, err := u.tokenService.ParseRefresh(refreshToken)
