@@ -9,8 +9,9 @@ import (
 )
 
 type config struct {
-	Env             Env
-	ShutdownTimeout time.Duration
+	Env              Env
+	ShutdownTimeout  time.Duration
+	InMemoryCacheTTL time.Duration
 	JWTToken
 	DB
 	Redis
@@ -25,6 +26,11 @@ func MustLoad() *config {
 	env := ParseEnv(os.Getenv("ENV"))
 
 	shutdownTimeout, err := time.ParseDuration(os.Getenv("SHUTDOWN_TIMEOUT"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	inMemoryCacheTTL, err := time.ParseDuration(os.Getenv("IN_MEMROY_CACHE_TTL"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,11 +56,12 @@ func MustLoad() *config {
 	}
 
 	return &config{
-		Env:             env,
-		ShutdownTimeout: shutdownTimeout,
-		JWTToken:        *jwtToken,
-		DB:              *db,
-		Redis:           *redis,
-		HTTPServer:      *http,
+		Env:              env,
+		ShutdownTimeout:  shutdownTimeout,
+		InMemoryCacheTTL: inMemoryCacheTTL,
+		JWTToken:         *jwtToken,
+		DB:               *db,
+		Redis:            *redis,
+		HTTPServer:       *http,
 	}
 }
