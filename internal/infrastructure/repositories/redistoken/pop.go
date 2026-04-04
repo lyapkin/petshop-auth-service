@@ -9,8 +9,8 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func (r *tokenRepo) PopByID(ctx context.Context, tokenID uuid.UUID) (userID uuid.UUID, err error) {
-	key := fmt.Sprintf("%s:%s", refreshTokenKeyPrefix, tokenID.String())
+func (r *tokenRepo) Pop(ctx context.Context, hash string) (userID uuid.UUID, err error) {
+	key := fmt.Sprintf("%s:%s", refreshTokenKeyPrefix, hash)
 
 	result, err := r.db.GetDel(ctx, key).Result()
 	if err == redis.Nil {
