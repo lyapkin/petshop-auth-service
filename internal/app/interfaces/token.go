@@ -8,11 +8,11 @@ import (
 )
 
 type TokenService interface {
-	GeneratePair(user *domain.User, tokenID uuid.UUID) (*domain.Token, error)
-	ParseRefresh(token string) (tokenID uuid.UUID, err error)
+	GeneratePair(user *domain.User) (*domain.Token, error)
+	Hash(token string) string
 }
 
 type TokenRepo interface {
-	Set(ctx context.Context, token *domain.RefreshToken) error
-	PopByID(context.Context, uuid.UUID) (userID uuid.UUID, err error)
+	Set(ctx context.Context, hash string, token *domain.RefreshToken) error
+	Pop(context.Context, string) (userID uuid.UUID, err error)
 }

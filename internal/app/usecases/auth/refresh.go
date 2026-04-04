@@ -10,13 +10,9 @@ import (
 func (u *Usecase) Refresh(ctx context.Context, refreshToken string) (*domain.Token, error) {
 	u.log.InfoContext(ctx, "refresh starts")
 
-	tokenID, err := u.tokenService.ParseRefresh(refreshToken)
-	if err != nil {
-		u.log.ErrorContext(ctx, "failed to parse refresh token", slog.String("err", err.Error()))
-		return nil, err
-	}
+	hash := u.tokenService.Hash(refreshToken)
 
-	userID, err := u.tokenRepo.PopByID(ctx, tokenID)
+	userID, err := u.tokenRepo.Pop(ctx, hash)
 	if err != nil {
 		u.log.ErrorContext(ctx, "failed to pop refresh token in db", slog.String("err", err.Error()))
 		return nil, err

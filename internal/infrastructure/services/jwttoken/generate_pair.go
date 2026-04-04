@@ -3,11 +3,10 @@ package jwttoken
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (s *service) GeneratePair(user *domain.User, tokenID uuid.UUID) (*domain.Token, error) {
+func (s *service) GeneratePair(user *domain.User) (*domain.Token, error) {
 	now := time.Now()
 
 	accessToken, err := s.GenerateAccess(now, user)
@@ -15,7 +14,7 @@ func (s *service) GeneratePair(user *domain.User, tokenID uuid.UUID) (*domain.To
 		return nil, err
 	}
 
-	refreshToken, err := s.GenerateRefresh(now, user, tokenID)
+	refreshToken, err := s.GenerateRefresh(now, user)
 	if err != nil {
 		return nil, err
 	}

@@ -8,8 +8,8 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (r *tokenRepo) Set(ctx context.Context, token *domain.RefreshToken) error {
-	key := fmt.Sprintf("%s:%s", refreshTokenKeyPrefix, token.TokenID.String())
+func (r *tokenRepo) Set(ctx context.Context, hash string, token *domain.RefreshToken) error {
+	key := fmt.Sprintf("%s:%s", refreshTokenKeyPrefix, hash)
 
 	err := r.db.Set(ctx, key, token.UserID.String(), time.Until(token.ExpiresAt)).Err()
 

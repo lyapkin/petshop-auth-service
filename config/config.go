@@ -22,11 +22,10 @@ type config struct {
 }
 
 type JWTToken struct {
-	AccessSecret  *rsa.PrivateKey
-	AccessPublic  *rsa.PublicKey
-	RefreshSecret []byte
-	AccessTTL     time.Duration
-	RefreshTTL    time.Duration
+	AccessSecret *rsa.PrivateKey
+	AccessPublic *rsa.PublicKey
+	AccessTTL    time.Duration
+	RefreshTTL   time.Duration
 }
 
 func MustLoad() *config {
@@ -82,11 +81,6 @@ func loadJWTTokenConfig() (*JWTToken, error) {
 		return nil, errors.New("no JWT_ACCESS_PUBLIC_PATH environment variable")
 	}
 
-	jwtRefreshPath := os.Getenv("JWT_REFRESH_SECRET_PATH")
-	if jwtRefreshPath == "" {
-		return nil, errors.New("no JWT_REFRESH_SECRET_PATH environment variable")
-	}
-
 	jwtAccessTTL, err := time.ParseDuration(os.Getenv("JWT_ACCESS_TTL"))
 	if err != nil {
 		return nil, err
@@ -107,17 +101,11 @@ func loadJWTTokenConfig() (*JWTToken, error) {
 		return nil, err
 	}
 
-	jwtRefresh, err := loadStringKey(jwtRefreshPath)
-	if err != nil {
-		return nil, err
-	}
-
 	return &JWTToken{
-		AccessSecret:  jwtAccessPrivate,
-		AccessPublic:  jwtAccessPublic,
-		RefreshSecret: jwtRefresh,
-		AccessTTL:     jwtAccessTTL,
-		RefreshTTL:    jwtRefreshTTL,
+		AccessSecret: jwtAccessPrivate,
+		AccessPublic: jwtAccessPublic,
+		AccessTTL:    jwtAccessTTL,
+		RefreshTTL:   jwtRefreshTTL,
 	}, nil
 }
 
