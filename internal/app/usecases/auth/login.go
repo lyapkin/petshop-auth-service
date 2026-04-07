@@ -12,13 +12,13 @@ import (
 func (u *Usecase) Login(ctx context.Context, input *dto.LoginInput) (*domain.Token, error) {
 	u.log.InfoContext(ctx, "login starts")
 
-	user, err := u.userRepo.GetByLogin(ctx, input.Login)
+	account, err := u.accountRepo.GetByLogin(ctx, input.Login)
 	if err != nil {
-		u.log.InfoContext(ctx, "failed to retreive user from db", slog.String("err", err.Error()))
+		u.log.InfoContext(ctx, "failed to retreive account from db", slog.String("err", err.Error()))
 		return nil, err
 	}
 
-	match, err := u.password.Compare(input.Password, user.Password)
+	match, err := u.password.Compare(input.Password, account.Password)
 	if err != nil {
 		u.log.ErrorContext(ctx, "login password checking failed", slog.String("err", err.Error()))
 		return nil, err
@@ -33,7 +33,7 @@ func (u *Usecase) Login(ctx context.Context, input *dto.LoginInput) (*domain.Tok
 		}
 	}
 
-	token, err := u.setupToken(ctx, user)
+	token, err := u.setupToken(ctx, account)
 
 	u.log.InfoContext(ctx, "login finished")
 

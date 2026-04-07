@@ -7,8 +7,8 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (u *Usecase) setupToken(ctx context.Context, user *domain.User) (*domain.Token, error) {
-	token, err := u.tokenService.GeneratePair(user)
+func (u *Usecase) setupToken(ctx context.Context, account *domain.Account) (*domain.Token, error) {
+	token, err := u.tokenService.GeneratePair(account)
 	if err != nil {
 		u.log.ErrorContext(ctx, "failed to genereate tokens", slog.String("err", err.Error()))
 		return nil, err

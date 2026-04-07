@@ -4,7 +4,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type User struct {
+type Account struct {
 	ID       uuid.UUID `json:"id"`
 	Name     string    `json:"name"`
 	Email    string    `json:"email"`
@@ -12,7 +12,7 @@ type User struct {
 	Roles    []Role    `json:"roles"`
 }
 
-func (u *User) Validate() error {
+func (u *Account) Validate() error {
 	// TODO: implement
 	return nil
 }

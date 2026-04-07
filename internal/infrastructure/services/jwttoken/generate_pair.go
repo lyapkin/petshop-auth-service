@@ -6,15 +6,15 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (s *service) GeneratePair(user *domain.User) (*domain.Token, error) {
+func (s *service) GeneratePair(account *domain.Account) (*domain.Token, error) {
 	now := time.Now()
 
-	accessToken, err := s.GenerateAccess(now, user)
+	accessToken, err := s.GenerateAccess(now, account)
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := s.GenerateRefresh(now, user)
+	refreshToken, err := s.GenerateRefresh(now, account)
 	if err != nil {
 		return nil, err
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (s *service) GenerateRefresh(now time.Time, user *domain.User) (*domain.RefreshToken, error) {
+func (s *service) GenerateRefresh(now time.Time, account *domain.Account) (*domain.RefreshToken, error) {
 	expiresAt := now.Add(s.refreshTTL)
 
 	b := make([]byte, 32) // 32 байта = 256 бит
@@ -21,6 +21,6 @@ func (s *service) GenerateRefresh(now time.Time, user *domain.User) (*domain.Ref
 	return &domain.RefreshToken{
 		Token:     token,
 		ExpiresAt: expiresAt,
-		UserID:    user.ID,
+		AccountID: account.ID,
 	}, nil
 }

@@ -11,7 +11,7 @@ import (
 func (r *tokenRepo) Set(ctx context.Context, hash string, token *domain.RefreshToken) error {
 	key := fmt.Sprintf("%s:%s", refreshTokenKeyPrefix, hash)
 
-	err := r.db.Set(ctx, key, token.UserID.String(), time.Until(token.ExpiresAt)).Err()
+	err := r.db.Set(ctx, key, token.AccountID.String(), time.Until(token.ExpiresAt)).Err()
 
 	if err != nil {
 		return domain.NewInternalErr(err)

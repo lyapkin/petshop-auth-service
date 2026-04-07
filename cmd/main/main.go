@@ -12,8 +12,8 @@ import (
 
 	"github.com/lyapkin/shop/auth/config"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/auth"
+	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgaccount"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgrole"
-	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pguser"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/redistoken"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/services/argon2pass"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/services/jwttoken"
@@ -43,7 +43,7 @@ func main() {
 	redisDB, err := redis.New(redisCtx, cfg.Redis)
 
 	// repositories initialization
-	userRepo := pguser.New(db)
+	accountRepo := pgaccount.New(db)
 	roleRepo := pgrole.New(db, cfg.InMemoryCacheTTL)
 	tokenRepo := redistoken.New(redisDB)
 
@@ -58,7 +58,7 @@ func main() {
 	// usecases init
 	authUsecase := auth.New(
 		logger,
-		userRepo,
+		accountRepo,
 		roleRepo,
 		passwordService,
 		tokenService,

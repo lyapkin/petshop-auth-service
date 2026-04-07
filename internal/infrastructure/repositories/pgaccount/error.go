@@ -1,4 +1,4 @@
-package pguser
+package pgaccount
 
 import (
 	"database/sql"

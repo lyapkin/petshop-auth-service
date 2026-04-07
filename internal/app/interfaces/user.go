@@ -7,8 +7,8 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-type UserRepo interface {
-	Create(context.Context, *domain.User) (*domain.User, error)
-	GetByLogin(context.Context, string) (*domain.User, error)
-	GetByID(context.Context, uuid.UUID) (*domain.User, error)
+type AccountRepo interface {
+	Create(context.Context, *domain.Account) (*domain.Account, error)
+	GetByLogin(context.Context, string) (*domain.Account, error)
+	GetByID(context.Context, uuid.UUID) (*domain.Account, error)
 }

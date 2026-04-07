@@ -8,7 +8,7 @@ import (
 
 type Usecase struct {
 	log          *slog.Logger
-	userRepo     interfaces.UserRepo
+	accountRepo  interfaces.AccountRepo
 	roleRepo     interfaces.RoleRepo
 	password     interfaces.PasswordHasher
 	tokenService interfaces.TokenService
@@ -17,7 +17,7 @@ type Usecase struct {
 
 func New(
 	log *slog.Logger,
-	userRepo interfaces.UserRepo,
+	accountRepo interfaces.AccountRepo,
 	roleRepo interfaces.RoleRepo,
 	password interfaces.PasswordHasher,
 	tokenService interfaces.TokenService,
@@ -25,7 +25,7 @@ func New(
 ) *Usecase {
 	return &Usecase{
 		log:          log,
-		userRepo:     userRepo,
+		accountRepo:  accountRepo,
 		roleRepo:     roleRepo,
 		password:     password,
 		tokenService: tokenService,

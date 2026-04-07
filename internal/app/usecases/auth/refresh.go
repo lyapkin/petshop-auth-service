@@ -12,19 +12,19 @@ func (u *Usecase) Refresh(ctx context.Context, refreshToken string) (*domain.Tok
 
 	hash := u.tokenService.Hash(refreshToken)
 
-	userID, err := u.tokenRepo.Pop(ctx, hash)
+	accountID, err := u.tokenRepo.Pop(ctx, hash)
 	if err != nil {
 		u.log.ErrorContext(ctx, "failed to pop refresh token in db", slog.String("err", err.Error()))
 		return nil, err
 	}
 
-	user, err := u.userRepo.GetByID(ctx, userID)
+	account, err := u.accountRepo.GetByID(ctx, accountID)
 	if err != nil {
-		u.log.ErrorContext(ctx, "faild to find user in db", slog.String("err", err.Error()))
+		u.log.ErrorContext(ctx, "faild to find account in db", slog.String("err", err.Error()))
 		return nil, err
 	}
 
-	token, err := u.setupToken(ctx, user)
+	token, err := u.setupToken(ctx, account)
 
 	u.log.InfoContext(ctx, "refresh finished")
 

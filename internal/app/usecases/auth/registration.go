@@ -8,38 +8,38 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-func (u *Usecase) Register(ctx context.Context, user *domain.User) (err error) {
-	u.log.InfoContext(ctx, "user resigstration started")
+func (u *Usecase) Register(ctx context.Context, account *domain.Account) (err error) {
+	u.log.InfoContext(ctx, "account resigstration started")
 
-	if err = user.Validate(); err != nil {
-		u.log.InfoContext(ctx, "user data is not valie", slog.String("err", err.Error()))
+	if err = account.Validate(); err != nil {
+		u.log.InfoContext(ctx, "account data is not valie", slog.String("err", err.Error()))
 		return err
 	}
-	u.log.InfoContext(ctx, "user data validation succeeded")
+	u.log.InfoContext(ctx, "account data validation succeeded")
 
-	// generate user id
-	user.ID, err = uuid.NewRandom()
+	// generate account id
+	account.ID, err = uuid.NewRandom()
 	if err != nil {
-		u.log.ErrorContext(ctx, "user id generation failed", slog.String("err", err.Error()))
+		u.log.ErrorContext(ctx, "account id generation failed", slog.String("err", err.Error()))
 		return &domain.AppError{
 			Code:     domain.ErrInternal,
 			Message:  domain.InternalErrorMessage,
 			Internal: err,
 		}
 	}
-	u.log.InfoContext(ctx, "user id generation succeeded")
+	u.log.InfoContext(ctx, "account id generation succeeded")
 
-	// hash user password
-	user.Password, err = u.password.Hash(user.Password)
+	// hash account password
+	account.Password, err = u.password.Hash(account.Password)
 	if err != nil {
-		u.log.ErrorContext(ctx, "user password hashing failed", slog.String("err", err.Error()))
+		u.log.ErrorContext(ctx, "account password hashing failed", slog.String("err", err.Error()))
 		return &domain.AppError{
 			Code:     domain.ErrInternal,
 			Message:  domain.InternalErrorMessage,
 			Internal: err,
 		}
 	}
-	u.log.InfoContext(ctx, "user password hashing succeeded")
+	u.log.InfoContext(ctx, "account password hashing succeeded")
 
 	// setting base role
 	role, err := u.roleRepo.GetBaseRole(ctx)
@@ -52,15 +52,15 @@ func (u *Usecase) Register(ctx context.Context, user *domain.User) (err error) {
 		}
 	}
 	u.log.InfoContext(ctx, "retrieving base role succeeded")
-	user.Roles = append(user.Roles, *role)
+	account.Roles = append(account.Roles, *role)
 
-	// storing user to db
-	_, err = u.userRepo.Create(ctx, user)
+	// storing account to db
+	_, err = u.accountRepo.Create(ctx, account)
 	if err != nil {
-		u.log.InfoContext(ctx, "user db insert failed", slog.String("err", err.Error()))
+		u.log.InfoContext(ctx, "account db insert failed", slog.String("err", err.Error()))
 		return err
 	}
 
-	u.log.InfoContext(ctx, "user registration succeeded")
+	u.log.InfoContext(ctx, "account registration succeeded")
 	return nil
 }

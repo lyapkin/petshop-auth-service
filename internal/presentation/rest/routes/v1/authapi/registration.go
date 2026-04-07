@@ -10,7 +10,7 @@ import (
 )
 
 func (h *handler) register(w http.ResponseWriter, r *http.Request) {
-	var input domain.User
+	var input domain.Account
 	if err := request.ParseBody(r.Body, &input); err != nil {
 		slog.WarnContext(r.Context(), "registration input parsing failed", slog.String("err", err.Error()))
 		response.ResWithError(w, &domain.AppError{

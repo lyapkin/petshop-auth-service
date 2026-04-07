@@ -14,7 +14,7 @@ type Token struct {
 type RefreshToken struct {
 	Token     string    `json:"refreshToken"`
 	ExpiresAt time.Time `json:"-"`
-	UserID    uuid.UUID `json:"-"`
+	AccountID uuid.UUID `json:"-"`
 }
 
 type AccessToken struct {
