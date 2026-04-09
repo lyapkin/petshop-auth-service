@@ -28,10 +28,7 @@ func main() {
 	defer stop()
 
 	cfg := config.MustLoad()
-	if cfg.Env != config.EnvProduction {
-		fmt.Printf("start app in %s environment", cfg.Env)
-	}
-	fmt.Printf("start app in %s environment", cfg.Env)
+	fmt.Printf("start app in %s environment\n", cfg.Env)
 
 	db, err := postgres.New(cfg.DB)
 	if err != nil {
@@ -75,15 +72,15 @@ func main() {
 	defer cancel()
 
 	if err := http.Shutdown(shutdownCtx); err != nil {
-		fmt.Printf("shutdown server: %v", err)
+		fmt.Printf("shutdown server: %v\n", err)
 	}
 
 	if err := db.Close(); err != nil {
-		fmt.Printf("close db: %v", err)
+		fmt.Printf("close db: %v\n", err)
 	}
 
 	if err := redisDB.Close(); err != nil {
-		fmt.Printf("close redis: %v", err)
+		fmt.Printf("close redis: %v\n", err)
 	}
 }
 
