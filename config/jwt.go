@@ -17,12 +17,12 @@ type JWTToken struct {
 }
 
 func loadJWTTokenConfig() (*JWTToken, error) {
-	jwtAccessPrivatePath := os.Getenv("JWT_ACCESS_SECRET_PATH")
+	jwtAccessPrivatePath := os.ExpandEnv(os.Getenv("JWT_ACCESS_SECRET_PATH"))
 	if jwtAccessPrivatePath == "" {
 		return nil, errors.New("no JWT_ACCESS_SECRET_PATH environment variable")
 	}
 
-	jwtAccessPublicPath := os.Getenv("JWT_ACCESS_PUBLIC_PATH")
+	jwtAccessPublicPath := os.ExpandEnv(os.Getenv("JWT_ACCESS_PUBLIC_PATH"))
 	if jwtAccessPublicPath == "" {
 		return nil, errors.New("no JWT_ACCESS_PUBLIC_PATH environment variable")
 	}
