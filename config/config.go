@@ -27,12 +27,12 @@ func MustLoad() *config {
 
 	shutdownTimeout, err := time.ParseDuration(os.Getenv("SHUTDOWN_TIMEOUT"))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Can not parse SHUTDOWN_TIMEOUT: %v", err)
 	}
 
 	inMemoryCacheTTL, err := time.ParseDuration(os.Getenv("IN_MEMROY_CACHE_TTL"))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Can not parse IN_MEMROY_CACHE_TTL: %v", err)
 	}
 
 	jwtToken, err := loadJWTTokenConfig()
