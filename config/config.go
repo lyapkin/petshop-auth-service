@@ -20,7 +20,7 @@ type config struct {
 
 func MustLoad() *config {
 	if err := godotenv.Load(); err != nil {
-		log.Fatal(err)
+		log.Printf("%v using system environment variables", err)
 	}
 
 	env := ParseEnv(os.Getenv("ENV"))
