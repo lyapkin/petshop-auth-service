@@ -12,6 +12,7 @@ import (
 
 	"github.com/lyapkin/shop/auth/config"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/auth"
+	"github.com/lyapkin/shop/auth/internal/app/usecases/role"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgaccount"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgrole"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/redistoken"
@@ -61,8 +62,12 @@ func main() {
 		tokenService,
 		tokenRepo,
 	)
+	roleUsecase := role.New(
+		logger,
+		roleRepo,
+	)
 
-	handler := rest.New(authUsecase)
+	handler := rest.New(authUsecase, roleUsecase)
 
 	http := runHTTPServer(&cfg.HTTPServer, handler)
 

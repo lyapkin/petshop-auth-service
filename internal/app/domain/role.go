@@ -7,3 +7,8 @@ type Role struct {
 	IsBase      bool
 	Permissions []Permission
 }
+
+func (r *Role) Validate() error {
+	// TODO: implement
+	return nil
+}

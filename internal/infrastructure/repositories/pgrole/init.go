@@ -8,6 +8,8 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
+var table string = "Role"
+
 type roleRepo struct {
 	db         *sql.DB
 	mu         sync.RWMutex
