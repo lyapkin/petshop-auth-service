@@ -12,8 +12,10 @@ import (
 
 	"github.com/lyapkin/shop/auth/config"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/auth"
+	"github.com/lyapkin/shop/auth/internal/app/usecases/permission"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/role"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgaccount"
+	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgpermission"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/pgrole"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/repositories/redistoken"
 	"github.com/lyapkin/shop/auth/internal/infrastructure/services/argon2pass"
@@ -44,6 +46,7 @@ func main() {
 	accountRepo := pgaccount.New(db)
 	roleRepo := pgrole.New(db, cfg.InMemoryCacheTTL)
 	tokenRepo := redistoken.New(redisDB)
+	permissionRepo := pgpermission.New(db)
 
 	// services initialization
 	passwordService := argon2pass.New()
@@ -66,8 +69,12 @@ func main() {
 		logger,
 		roleRepo,
 	)
+	permission := permission.New(
+		logger,
+		permissionRepo,
+	)
 
-	handler := rest.New(authUsecase, roleUsecase)
+	handler := rest.New(authUsecase, roleUsecase, permission)
 
 	http := runHTTPServer(&cfg.HTTPServer, handler)
 
