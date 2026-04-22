@@ -16,6 +16,7 @@ func (r *roleRepo) List(ctx context.Context) ([]domain.Role, error) {
 	if err != nil {
 		return nil, postgres.BuildErr(err, table)
 	}
+	defer rows.Close()
 
 	result := make([]domain.Role, 0, 12)
 	for rows.Next() {
@@ -30,6 +31,10 @@ func (r *roleRepo) List(ctx context.Context) ([]domain.Role, error) {
 		); err != nil {
 			return nil, postgres.BuildErr(err, table)
 		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, postgres.BuildErr(err, table)
 	}
 
 	// TODO: join with Permission

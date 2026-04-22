@@ -9,7 +9,7 @@ import (
 
 func (r *roleRepo) Update(ctx context.Context, input *domain.Role) (*domain.Role, error) {
 	query := `
-	UPDATE role SET slug = $2, name = $3 is_base = $4
+	UPDATE role SET slug = $2, name = $3, is_base = $4
 	WHERE id = $1
 	RETURNING id, slug, name, is_base
 	`
