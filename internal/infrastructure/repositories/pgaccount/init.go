@@ -2,6 +2,8 @@ package pgaccount
 
 import "database/sql"
 
+var table string = "account"
+
 type accountRepo struct {
 	db *sql.DB
 }

@@ -9,6 +9,9 @@ import (
 
 type AccountRepo interface {
 	Create(context.Context, *domain.Account) (*domain.Account, error)
+	List(context.Context) ([]domain.Account, error)
 	GetByLogin(context.Context, string) (*domain.Account, error)
 	GetByID(context.Context, uuid.UUID) (*domain.Account, error)
+	Update(context.Context, *domain.Account) (*domain.Account, error)
+	Delete(context.Context, uuid.UUID) error
 }

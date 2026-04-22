@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/lyapkin/shop/auth/config"
+	"github.com/lyapkin/shop/auth/internal/app/usecases/account"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/auth"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/permission"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/role"
@@ -73,8 +74,12 @@ func main() {
 		logger,
 		permissionRepo,
 	)
+	accountUsecase := account.New(
+		logger,
+		accountRepo,
+	)
 
-	handler := rest.New(authUsecase, roleUsecase, permission)
+	handler := rest.New(authUsecase, roleUsecase, permission, accountUsecase)
 
 	http := runHTTPServer(&cfg.HTTPServer, handler)
 
