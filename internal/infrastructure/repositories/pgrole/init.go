@@ -8,7 +8,8 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-var table string = "Role"
+var table string = "role"
+var joinTable string = "role_permission"
 
 type roleRepo struct {
 	db         *sql.DB
