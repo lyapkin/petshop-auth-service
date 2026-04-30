@@ -29,7 +29,7 @@ func (r *roleRepo) Update(ctx context.Context, input *domain.Role) (*domain.Role
 		return nil, postgres.BuildErr(err, table)
 	}
 
-	// TODO: update role_permission
+	// update role_permission
 	query = `
 	DELETE FROM role_permission WHERE role_id = $1
 	`
