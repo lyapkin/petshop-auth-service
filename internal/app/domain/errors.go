@@ -7,10 +7,11 @@ import (
 type ErrorCode string
 
 const (
-	ErrNotFound         ErrorCode = "NOT_FOUND"
-	ErrDuplicate        ErrorCode = "DUPLICATE"
-	ErrNotValid         ErrorCode = "NOT_VALID"
-	ErrNotAuthenticated ErrorCode = "NOT_AUTHENTICATED"
+	ErrNotFound              ErrorCode = "NOT_FOUND"
+	ErrDuplicate             ErrorCode = "DUPLICATE"
+	ErrNotValid              ErrorCode = "NOT_VALID"
+	ErrNotAuthenticated      ErrorCode = "NOT_AUTHENTICATED"
+	ErrBuisnessRuleViolation ErrorCode = "CONFLICT"
 
 	ErrIDExists ErrorCode = "ID_EXISTS"
 
