@@ -9,7 +9,9 @@ import (
 
 func (r *roleRepo) List(ctx context.Context) ([]domain.Role, error) {
 	query := `
-	SELECT id, slug, name, is_base FROM role
+	SELECT r.id, r.slug, r.name, r.is_base, p.id, p.slug FROM role
+	JOIN role_permission rp ON r.id = rp.role_id
+	JOIN permission p ON p.id = rp.permission_id
 	`
 
 	rows, err := r.db.QueryContext(ctx, query)
@@ -19,25 +21,35 @@ func (r *roleRepo) List(ctx context.Context) ([]domain.Role, error) {
 	defer rows.Close()
 
 	result := make([]domain.Role, 0, 12)
+	role := domain.Role{}
+	permission := domain.Permission{}
+	var i int
 	for rows.Next() {
-		i := len(result)
-		result := append(result, domain.Role{})
-
 		if err := rows.Scan(
-			&result[i].ID,
-			&result[i].Slug,
-			&result[i].Name,
-			&result[i].IsBase,
+			&role.ID,
+			&role.Slug,
+			&role.Name,
+			&role.IsBase,
+			&permission.ID,
+			&permission.Slug,
 		); err != nil {
 			return nil, postgres.BuildErr(err, table)
+		}
+
+		if len(result) == 0 || role.ID != result[i].ID {
+			i = len(result)
+			result = append(result, role)
+			result[i].Permissions = make([]domain.Permission, 0)
+		}
+
+		if permission.ID != 0 {
+			result[i].Permissions = append(result[i].Permissions, permission)
 		}
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, postgres.BuildErr(err, table)
 	}
-
-	// TODO: join with Permission
 
 	return result, nil
 }
