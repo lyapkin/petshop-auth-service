@@ -11,7 +11,7 @@ import (
 
 func (h *handler) update(w http.ResponseWriter, r *http.Request) {
 	var input domain.Role
-	if err := request.ParseBody(r.Body, input); err != nil {
+	if err := request.ParseBody(r.Body, &input); err != nil {
 		slog.InfoContext(r.Context(), "role input parsing failed", slog.String("err", err.Error()))
 		response.ResWithError(w, err)
 		return

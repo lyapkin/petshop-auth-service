@@ -3,31 +3,33 @@ package pgrole
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 	"github.com/lyapkin/shop/auth/internal/storage/postgres"
 )
 
-func (r *roleRepo) List(ctx context.Context) ([]domain.Role, error) {
+func (r *roleRepo) GetByID(ctx context.Context, id int) (*domain.Role, error) {
 	query := `
 	SELECT r.id, r.slug, r.name, r.is_base, p.id, p.slug FROM role r
 	LEFT JOIN role_permission rp ON r.id = rp.role_id
 	LEFT JOIN permission p ON rp.permission_id = p.id
+	WHERE r.id = $1
 	`
 
-	rows, err := r.db.QueryContext(ctx, query)
+	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {
 		return nil, postgres.BuildErr(err, table)
 	}
 	defer rows.Close()
 
-	result := make([]domain.Role, 0, 12)
-	role := domain.Role{}
+	role := domain.Role{
+		Permissions: make([]domain.Permission, 0),
+	}
 
 	var pID sql.NullInt64
 	var pSlug sql.NullString
 
-	var i int
 	for rows.Next() {
 		if err := rows.Scan(
 			&role.ID,
@@ -40,23 +42,21 @@ func (r *roleRepo) List(ctx context.Context) ([]domain.Role, error) {
 			return nil, postgres.BuildErr(err, table)
 		}
 
-		if len(result) == 0 || role.ID != result[i].ID {
-			i = len(result)
-			result = append(result, role)
-			result[i].Permissions = make([]domain.Permission, 0)
-		}
-
 		if pID.Valid {
-			result[i].Permissions = append(result[i].Permissions, domain.Permission{
+			role.Permissions = append(role.Permissions, domain.Permission{
 				ID:   int(pID.Int64),
 				Slug: pSlug.String,
 			})
 		}
 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, postgres.BuildErr(err, table)
+	if role.ID == 0 {
+		return nil, &domain.AppError{
+			Code:     domain.ErrNotFound,
+			Message:  "role does not exists",
+			Internal: fmt.Errorf("no role with id: %d", id),
+		}
 	}
 
-	return result, nil
+	return &role, nil
 }

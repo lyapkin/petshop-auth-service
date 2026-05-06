@@ -20,8 +20,10 @@ func New(uc *role.Usecase) http.Handler {
 
 	r.Post("/", handler.create)
 	r.Get("/", handler.list)
+	r.Get("/{id}", handler.getByID)
 	r.Put("/{id}", handler.update)
 	r.Delete("/{id}", handler.delete)
+	// TODO: set base role endpoint
 
 	return r
 }

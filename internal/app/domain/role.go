@@ -1,11 +1,11 @@
 package domain
 
 type Role struct {
-	ID          int
-	Slug        string
-	Name        string
-	IsBase      bool
-	Permissions []Permission
+	ID          int          `json:"id"`
+	Slug        string       `json:"slug"`
+	Name        string       `json:"name"`
+	IsBase      bool         `json:"isBase"`
+	Permissions []Permission `json:"permissions"`
 }
 
 func (r *Role) Validate() error {

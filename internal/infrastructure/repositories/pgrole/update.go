@@ -7,6 +7,7 @@ import (
 	"github.com/lyapkin/shop/auth/internal/storage/postgres"
 )
 
+// TODO: restrict is_base update
 func (r *roleRepo) Update(ctx context.Context, input *domain.Role) (*domain.Role, error) {
 	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {

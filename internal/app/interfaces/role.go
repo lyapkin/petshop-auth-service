@@ -12,4 +12,5 @@ type RoleRepo interface {
 	Update(context.Context, *domain.Role) (*domain.Role, error)
 	Delete(context.Context, int) error
 	List(context.Context) ([]domain.Role, error)
+	GetByID(context.Context, int) (*domain.Role, error)
 }

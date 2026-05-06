@@ -2,6 +2,7 @@ package role
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
@@ -11,7 +12,7 @@ func (u *Usecase) List(ctx context.Context) ([]domain.Role, error) {
 
 	roles, err := u.roleRepo.List(ctx)
 	if err != nil {
-		u.log.ErrorContext(ctx, "retreiving list of roles from db failed")
+		u.log.ErrorContext(ctx, "retreiving list of roles from db failed", slog.String("err", err.Error()))
 		return nil, err
 	}
 
