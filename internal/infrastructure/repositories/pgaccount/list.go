@@ -21,8 +21,8 @@ func (r *accountRepo) List(ctx context.Context) ([]domain.Account, error) {
 	result := make([]domain.Account, 0, 12)
 	for rows.Next() {
 		i := len(result)
-		result := append(result, domain.Account{})
-		if err := rows.Scan(result[i].ID, result[i].Name, result[i].Email); err != nil {
+		result = append(result, domain.Account{})
+		if err := rows.Scan(&result[i].ID, &result[i].Name, &result[i].Email); err != nil {
 			return nil, postgres.BuildErr(err, table)
 		}
 	}
