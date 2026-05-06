@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
@@ -32,7 +31,12 @@ func main() {
 	defer stop()
 
 	cfg := config.MustLoad()
-	fmt.Printf("start app in %s environment\n", cfg.Env)
+
+	// logger initialization
+	logger := logger.New(cfg.Env)
+	slog.SetDefault(logger)
+
+	log.Printf("start app in %s environment\n", cfg.Env)
 
 	db, err := postgres.New(cfg.DB)
 	if err != nil {
@@ -48,14 +52,12 @@ func main() {
 	roleRepo := pgrole.New(db, cfg.InMemoryCacheTTL)
 	tokenRepo := redistoken.New(redisDB)
 	permissionRepo := pgpermission.New(db)
+	log.Print("repositories initialized")
 
 	// services initialization
 	passwordService := argon2pass.New()
 	tokenService := jwttoken.New(&cfg.JWTToken)
-
-	// logger initialization
-	logger := logger.New(cfg.Env)
-	slog.SetDefault(logger)
+	log.Print("services initialized")
 
 	// usecases init
 	authUsecase := auth.New(
@@ -78,26 +80,32 @@ func main() {
 		logger,
 		accountRepo,
 	)
+	log.Print("usecases initialized")
 
 	handler := rest.New(authUsecase, roleUsecase, permission, accountUsecase)
+	log.Print("handlers initialized")
 
 	http := runHTTPServer(&cfg.HTTPServer, handler)
 
+	log.Printf("listen on %s:%d", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
+
 	<-ctx.Done()
+
+	log.Print("shutdown started")
 
 	shutdownCtx, cancel := context.WithTimeout(ctx, cfg.ShutdownTimeout)
 	defer cancel()
 
 	if err := http.Shutdown(shutdownCtx); err != nil {
-		fmt.Printf("shutdown server: %v\n", err)
+		log.Printf("shutdown server: %v\n", err)
 	}
 
 	if err := db.Close(); err != nil {
-		fmt.Printf("close db: %v\n", err)
+		log.Printf("close db: %v\n", err)
 	}
 
 	if err := redisDB.Close(); err != nil {
-		fmt.Printf("close redis: %v\n", err)
+		log.Printf("close redis: %v\n", err)
 	}
 }
 
