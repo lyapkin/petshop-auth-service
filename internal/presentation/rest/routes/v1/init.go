@@ -27,5 +27,9 @@ func New(
 	r.Mount("/permissions", permissionapi.New(permission))
 	r.Mount("/accounts", accountapi.New(account))
 
+	r.Mount("/health", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("OK"))
+	}))
+
 	return r
 }
