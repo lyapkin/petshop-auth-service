@@ -9,12 +9,13 @@ import (
 )
 
 var httpErrCode = map[domain.ErrorCode]int{
-	domain.ErrNotFound:         http.StatusNotFound,
-	domain.ErrDuplicate:        http.StatusBadRequest,
-	domain.ErrNotValid:         http.StatusBadRequest,
-	domain.ErrIDExists:         http.StatusInternalServerError,
-	domain.ErrInternal:         http.StatusInternalServerError,
-	domain.ErrNotAuthenticated: http.StatusUnauthorized,
+	domain.ErrNotFound:              http.StatusNotFound,
+	domain.ErrDuplicate:             http.StatusBadRequest,
+	domain.ErrNotValid:              http.StatusBadRequest,
+	domain.ErrIDExists:              http.StatusInternalServerError,
+	domain.ErrInternal:              http.StatusInternalServerError,
+	domain.ErrNotAuthenticated:      http.StatusUnauthorized,
+	domain.ErrBuisnessRuleViolation: http.StatusConflict,
 }
 
 func ResWithError(w http.ResponseWriter, err error) {
