@@ -21,7 +21,7 @@ func (r *permissionRepo) List(ctx context.Context) ([]domain.Permission, error) 
 	for rows.Next() {
 		i := len(result)
 		result = append(result, domain.Permission{})
-		if err := rows.Scan(result[i].ID, result[i].Slug); err != nil {
+		if err := rows.Scan(&result[i].ID, &result[i].Slug); err != nil {
 			return nil, postgres.BuildErr(err, table)
 		}
 	}

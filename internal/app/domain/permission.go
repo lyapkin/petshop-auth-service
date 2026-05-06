@@ -1,14 +1,8 @@
 package domain
 
-import "encoding/json"
-
 type Permission struct {
-	ID   int
-	Slug string
-}
-
-func (p Permission) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.Slug)
+	ID   int    `json:"id"`
+	Slug string `json:"slug"`
 }
 
 func (r *Permission) Validate() error {
