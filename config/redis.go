@@ -38,9 +38,6 @@ func loadRedisConfig() (*Redis, error) {
 	}
 
 	pass := os.Getenv("REDIS_PASSWORD")
-	if pass == "" {
-		return nil, errors.New("REDIS_PASSWORD environment variable not set")
-	}
 
 	return &Redis{
 		Host: host,

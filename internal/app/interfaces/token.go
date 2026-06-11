@@ -12,6 +12,10 @@ type TokenService interface {
 	Hash(token string) string
 }
 
+type TokenValidator interface {
+	ValidateToken(token string) (*domain.AccessTokenClaims, error)
+}
+
 type TokenRepo interface {
 	Set(ctx context.Context, hash string, token *domain.RefreshToken) error
 	Pop(context.Context, string) (accountID uuid.UUID, err error)

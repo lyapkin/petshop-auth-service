@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/lyapkin/shop/auth/internal/app/interfaces"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/account"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/auth"
 	"github.com/lyapkin/shop/auth/internal/app/usecases/permission"
@@ -19,13 +20,14 @@ func New(
 	role *role.Usecase,
 	permission *permission.Usecase,
 	account *account.Usecase,
+	tokenValidator interfaces.TokenValidator,
 ) http.Handler {
 	r := chi.NewRouter()
 
 	r.Mount("/auth", authapi.New(auth))
 	r.Mount("/roles", roleapi.New(role))
 	r.Mount("/permissions", permissionapi.New(permission))
-	r.Mount("/accounts", accountapi.New(account))
+	r.Mount("/accounts", accountapi.New(account, tokenValidator))
 
 	r.Mount("/health", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))

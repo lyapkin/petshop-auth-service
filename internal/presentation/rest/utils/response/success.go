@@ -11,5 +11,5 @@ func ResWithSuccess(w http.ResponseWriter, code int, payload any) {
 }
 
 type responseSuccess struct {
-	Data any `json:"data"`
+	Data any `json:"data,omitempty"`
 }

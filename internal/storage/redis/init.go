@@ -10,7 +10,7 @@ import (
 func New(ctx context.Context, cfg config.Redis) (*redis.Client, error) {
 	db := redis.NewClient(&redis.Options{
 		Addr:     cfg.Addr(),
-		Username: cfg.Host,
+		Username: cfg.User,
 		Password: cfg.Pass,
 	})
 

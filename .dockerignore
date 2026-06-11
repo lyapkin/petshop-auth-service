@@ -1,0 +1,12 @@
+.env*
+
+.certs/
+.git/
+
+.dockerignore
+.gitignore
+
+/migrations
+
+docker-compose*
+compose*

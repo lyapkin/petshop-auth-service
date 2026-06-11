@@ -7,16 +7,12 @@ import (
 	"github.com/lyapkin/shop/auth/internal/app/domain"
 )
 
-type accessTokenClaims struct {
-	Name   string              `json:"name"`
-	Scopes []domain.Permission `json:"scopes"`
-	jwt.RegisteredClaims
-}
-
 func (s *service) GenerateAccess(now time.Time, account *domain.Account) (*domain.AccessToken, error) {
 	accessClaims := accessTokenClaims{
-		Name:   account.Name,
-		Scopes: getAccountUniquePermissions(account),
+		AccessTokenClaims: domain.AccessTokenClaims{
+			Name:   account.Name,
+			Scopes: getAccountUniquePermissions(account),
+		},
 		RegisteredClaims: jwt.RegisteredClaims{
 			Subject:   account.ID.String(),
 			ExpiresAt: jwt.NewNumericDate(now.Add(s.accessTTL)),

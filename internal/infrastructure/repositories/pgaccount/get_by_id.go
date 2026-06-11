@@ -19,7 +19,7 @@ func (r *accountRepo) GetByID(ctx context.Context, id uuid.UUID) (*domain.Accoun
 
 	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {
-		return nil, buildErr(err)
+		return nil, postgres.BuildErr(err, table)
 	}
 	defer rows.Close()
 

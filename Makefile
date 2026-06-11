@@ -13,3 +13,22 @@ certs:
 
 clean-certs:
 	rm -rf $(SECRET_DIR)
+
+export GOOSE_DRIVER=${DB_DRIVER}
+export GOOSE_DBSTRING=$(DB_URL)
+export GOOSE_MIGRATION_DIR=$(MIGRATIONS_DIR)
+
+DB_URL=${DB_DRIVER}://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable
+MIGRATIONS_DIR=./migrations
+
+create:
+	@goose create $(name) sql
+
+up:
+	@goose up
+
+down:
+	@goose down
+
+status:
+	@goose status

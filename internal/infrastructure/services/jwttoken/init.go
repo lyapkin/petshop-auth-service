@@ -9,6 +9,7 @@ import (
 
 type service struct {
 	accessSecret *rsa.PrivateKey
+	accessPublic *rsa.PublicKey
 	accessTTL    time.Duration
 	refreshTTL   time.Duration
 }
@@ -16,6 +17,7 @@ type service struct {
 func New(cfg *config.JWTToken) *service {
 	return &service{
 		accessSecret: cfg.AccessSecret,
+		accessPublic: cfg.AccessPublic,
 		accessTTL:    cfg.AccessTTL,
 		refreshTTL:   cfg.RefreshTTL,
 	}

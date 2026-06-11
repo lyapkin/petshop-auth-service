@@ -20,3 +20,8 @@ type RefreshToken struct {
 type AccessToken struct {
 	Token string `json:"accessToken"`
 }
+
+type AccessTokenClaims struct {
+	Name   string       `json:"name"`
+	Scopes []Permission `json:"scopes"`
+}

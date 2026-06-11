@@ -46,6 +46,9 @@ func main() {
 	redisCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 	redisDB, err := redis.New(redisCtx, cfg.Redis)
+	if err != nil {
+		log.Fatal("failed to setup redis: %w", err)
+	}
 
 	// repositories initialization
 	accountRepo := pgaccount.New(db)
@@ -82,7 +85,7 @@ func main() {
 	)
 	log.Print("usecases initialized")
 
-	handler := rest.New(authUsecase, roleUsecase, permission, accountUsecase)
+	handler := rest.New(authUsecase, roleUsecase, permission, accountUsecase, tokenService)
 	log.Print("handlers initialized")
 
 	http := runHTTPServer(&cfg.HTTPServer, handler)
